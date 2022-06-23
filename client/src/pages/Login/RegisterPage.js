@@ -124,7 +124,7 @@ class Register extends Component {
                 <ErrorMessage name="password_confirmation" />
               </div>
             </div>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-warning">
               Register
             </button>
           </Form>

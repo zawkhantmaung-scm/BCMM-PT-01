@@ -29,3 +29,15 @@ code {
   justify-content: center;
   align-items: center;
 }
+.menu {
+  display: flex;
+  flex-direction: column;
+  padding: 5rem;
+}
+a {
+  color: black;
+}
+a:hover {
+  text-decoration: none;
+  cursor: pointer;
+}

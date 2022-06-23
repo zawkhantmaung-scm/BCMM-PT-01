@@ -11,8 +11,8 @@ class Success extends Component {
     render() {
       return (
         <div className="success">
-          <h3>We have sent verification code to your email!</h3>
-          <Link to="/login">Return to Login</Link>
+          <h3 className="mb-4">We have sent verification code to your email!</h3>
+          <Link to="/login" className="btn btn-warning">Return to Login</Link>
         </div>
       )
     }

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import Error from "../../components/Error";
 import axios from "../../axios";
 import { LOGIN_SUCCESS } from "../../store/actions/types";
 
@@ -14,17 +13,13 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      errors: []
+      errors: '',
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit({ email, password }) {
-    this.setState({
-      errors: {}
-    });
-
     const { dispatch } = this.props;
     const data = { email, password };
 
@@ -35,20 +30,19 @@ class Login extends Component {
           "user",
           JSON.stringify(res.data)
         );
-
+        /** store logged in email to local storage */
+        localStorage.setItem("login_email", res.data.user.email);
         /** store logged in user's info to App State */
         dispatch({
           type: LOGIN_SUCCESS,
           payload: res.data
         });
       })
-      .then(() => this.props.history.push("/"))
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          if (error.response.data.errors) {
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.data.errors) {
             this.setState({
-              errors: error.response.data.errors
+              errors: err.response.data.errors,
             });
           }
         }
@@ -59,15 +53,14 @@ class Login extends Component {
     if (this.props.isLoggedIn) {
       return <Redirect to="/" />;
     }
-
     return (
       <div>
         <h2>Login Form</h2>
-        <div className="mb-3">
-          <Error errors={this.state.errors} />
-        </div>
+        <p className="error-block txt-error mb-2 mt-2">
+          {this.state.errors}
+        </p>
         <Formik
-          initialValues={{ email: JSON.parse(localStorage.getItem('login_email')) || "", password: "" }}
+          initialValues={{ email: localStorage.getItem('login_email') || '', password: "" }}
           validationSchema={Yup.object({
             email: Yup.string()
               .email("Invalid email address")
@@ -107,7 +100,7 @@ class Login extends Component {
                 <ErrorMessage name="password" />
               </div>
             </div>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-warning">
               Login
             </button>
           </Form>

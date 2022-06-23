@@ -27,7 +27,7 @@ class AuthService implements AuthServiceInterface
 
         if ($isVerified) {
             return response()->json([
-                'message' => 'You must be verify your email.',
+                'errors' => 'You must be verify your email.',
                 'is_verified' => false,
             ], 400);
         }
@@ -35,9 +35,9 @@ class AuthService implements AuthServiceInterface
         $response = $this->authRepo->getUser($user);
     
         if (!$response || !Hash::check($user['password'], $response->password)) {
-            throw ValidationException::withMessages([
-                'email' => 'auth failed',
-            ]);
+            return response()->json([
+                'errors' => 'Email and password are incorrect.'
+            ], 400);
         }
     
         $token = $response->createToken($response->email)->plainTextToken;
@@ -95,7 +95,7 @@ class AuthService implements AuthServiceInterface
     public function verification($token)
     {
         $isExist = $this->authRepo->verification($token);
-        if ($isExist->email) {
+        if (!!$isExist && $isExist->email) {
             $this->authRepo->verifyEmail($isExist->email);
             return response()->json([
                 'message' => 'Email verification success.',
@@ -103,6 +103,6 @@ class AuthService implements AuthServiceInterface
             ]);
         }
 
-        return response()->json(['message' => 'EmInvalid code. Please Try again.']);
+        return response()->json(['errors' => 'Invalid code. Please Try again.'], 404);
     }
 }

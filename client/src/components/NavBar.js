@@ -15,7 +15,7 @@ const NavBar = ({
   const isActiveLink = url => url === pathName;
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="warning" expand="lg">
       <Navbar.Brand>BCMM</Navbar.Brand>
       <Navbar.Collapse>
         <Nav className="mr-auto">
