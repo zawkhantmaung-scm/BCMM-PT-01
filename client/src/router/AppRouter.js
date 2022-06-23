@@ -5,11 +5,10 @@ import PrivateRoute from "./PrivateRoute";
 import LoginPage from "../pages/Login/LoginPage";
 import RegisterPage from "../pages/Login/RegisterPage";
 import VerificationPage from "../pages/Login/VerificationPage";
-// import HomePage from "../pages/Home/HomePage";
 import IndexPage from "../pages/Home/IndexPage";
-import MenuOnePage from "../pages/Home/MenuOnePage";
-import MenuTwoPage from "../pages/Home/MenuTwoPage";
-import MenuThreePage from "../pages/Home/MenuThreePage";
+import SaveIncomePage from "../pages/Home/SaveIncomePage";
+import WishListPage from "../pages/Home/WishListPage";
+import ManageIncomePage from "../pages/Home/ManageIncomePage";
 import Success from "../pages/SuccessPage";
 
 const AppRouter = () => (
@@ -19,10 +18,9 @@ const AppRouter = () => (
       <PublicRoute path="/register" component={RegisterPage} />
       <PublicRoute path="/verification" component={VerificationPage} />
       <PublicRoute path="/success" component={Success} />
-      {/* <PrivateRoute path="/" component={HomePage} /> */}
-      <PublicRoute path="/menu-one" component={MenuOnePage} />
-      <PublicRoute path="/menu-two" component={MenuTwoPage} />
-      <PublicRoute path="/menu-three" component={MenuThreePage} />
+      <PrivateRoute path="/save-income" component={SaveIncomePage} />
+      <PrivateRoute path="/wish-list" component={WishListPage} />
+      <PrivateRoute path="/manage-income" component={ManageIncomePage} />
       {/* Declare Before Index Page */}
       <PrivateRoute path="/" component={IndexPage} />
 

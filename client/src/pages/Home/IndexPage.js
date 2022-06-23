@@ -7,14 +7,14 @@ class Index extends Component {
     return (
       <Fragment>
         <div className="menu">
-          <Link to="/menu-one" className="btn btn-warning mb-4">
-            menu-one
+          <Link to="/save-income" className="btn btn-warning mb-4">
+            SAVE INCOME
           </Link>
-          <Link to="/menu-two" className="btn btn-warning mb-4">
-            menu-two
+          <Link to="/wish-list" className="btn btn-warning mb-4">
+            WISH LIST
           </Link>
-          <Link to="/menu-three" className="btn btn-warning mb-4">
-            menu-three
+          <Link to="/manage-income" className="btn btn-warning mb-4">
+            MANAGE INCOME
           </Link>
         </div>
       </Fragment>
