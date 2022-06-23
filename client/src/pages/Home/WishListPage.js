@@ -7,10 +7,11 @@ import axios from "../../axios";
 class WishList extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       errors: "",
       success: "",
+      wish: [],
+      pag: 0,
     };
   }
 
@@ -34,6 +35,48 @@ class WishList extends Component {
           }
         }
       });
+  }
+
+  fetchWishList() {
+    const data = JSON.parse(localStorage.getItem("user"));
+    const options = {
+      method: "GET",
+      headers: { Authorization: `Bearer ${data.token}` },
+      url: "list",
+    };
+    axios(options)
+      .then((res) => {
+        if (res.data && res.data.wish && this._isMounted) {
+          const pagination = localStorage.getItem('pagination')
+          this.setState({
+            wish: res.data.wish.slice(pagination * 10, pagination + 10),
+          });
+        }
+      })
+      .catch((err) => {
+        if (err.response && this._isMounted) {
+          if (err.response.data.errors) {
+            this.setState({
+              errors: err.response.data.errors,
+            });
+          }
+        }
+      });
+  }
+
+  pagination = (num, text) => {
+    console.log('num', num, text)
+    localStorage.setItem('pagination', num)
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+    this.pagination(this.state.pag)
+    this.fetchWishList();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
@@ -92,6 +135,53 @@ class WishList extends Component {
             </button>
           </Form>
         </Formik>
+        {this.state.wish.length > 0 && (
+          <div>
+            <table className="table table-bordered mt-4">
+              <thead>
+                <tr>
+                  <th scope="col">NO</th>
+                  <th scope="col">Item</th>
+                  <th scope="col">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.wish.map((i) => (
+                  <tr key={i.id}>
+                    <td className="col-1">{i.id}</td>
+                    <td>{i.item}</td>
+                    <td className="col-3">{i.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+              <ul className="pagination">
+                <li className="page-item">
+                  <button onClick={this.pagination} className={`page-link ${this.state.pag === 0 ? 'disabled':''}`} aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span className="sr-only">Previous</span>
+                  </button>
+                </li>
+                <li className="page-item">
+                  <button className="page-link">1</button>
+                </li>
+                <li className="page-item">
+                  <button className="page-link">2</button>
+                </li>
+                <li className="page-item">
+                  <button className="page-link">3</button>
+                </li>
+                <li onClick={this.pagination} className="page-item">
+                  <button  className={`page-link`} aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span className="sr-only">Next</span>
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        )}
       </div>
     );
   }
