@@ -23,7 +23,7 @@ class Verification extends Component {
     axios
       .post("verification", { token })
       .then((res) => {
-        if (res.data) {
+        if (res.data && this._isMounted) {
           this.setState({
             success: res.data.message,
           });
@@ -31,7 +31,7 @@ class Verification extends Component {
         }
       })
       .catch((err) => {
-        if (err.response) {
+        if (err.response && this._isMounted) {
           if (err.response.data.errors) {
             this.setState({
               errors: err.response.data.errors,

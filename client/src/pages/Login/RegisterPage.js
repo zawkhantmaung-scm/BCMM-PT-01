@@ -18,10 +18,6 @@ class Register extends Component {
   }
 
   handleSubmit({ name, email, password, password_confirmation }) {
-    this.setState({
-      errors: {},
-    });
-
     const data = { name, email, password, password_confirmation };
 
     axios

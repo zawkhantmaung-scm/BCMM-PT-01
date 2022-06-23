@@ -16,9 +16,13 @@ const NavBar = ({ isLoggedIn, user, handleLogout, history, location }) => {
           <Nav.Item className={isActiveLink("/home") && "active"}></Nav.Item>
         </Nav>
         {isLoggedIn ? (
-          <a href="/" onClick={(e) => handleLogout(e)}>
-            Logout
-          </a>
+          location.pathname === "/" ? (
+            <a href="/" onClick={(e) => handleLogout(e)}>
+              Logout
+            </a>
+          ) : (
+            <Link to="/">Home</Link>
+          )
         ) : location.pathname === "/login" ? (
           <Link to="/register">Register</Link>
         ) : (
