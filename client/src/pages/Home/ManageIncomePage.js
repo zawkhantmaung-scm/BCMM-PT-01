@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import axios from "../../axios";
+import max_possible_pair from "max_possible_pair";
 
 class WishList extends Component {
   constructor(props) {
@@ -43,35 +44,6 @@ class WishList extends Component {
       });
   }
 
-  max_possible_pair(data = [], max = 0, key = "") {
-    //TODO: Replace with module
-    data = data
-      .filter((i) => i[key] <= max)
-      .sort((i, j) => i[key] - j[key])
-      .sort((i, j) => i.id - j.id);
-    let length = data.length;
-    return Array(Math.pow(2, length))
-      .fill()
-      .map((_, i) => {
-        let j = -1,
-          k = i,
-          res = [];
-        while (++j < length) {
-          k & 1 && res.push(data[j]);
-          k >>= 1;
-        }
-        return res;
-      })
-      .slice(1)
-      .filter((i) => i.reduce((i, j) => i + j[key], 0) <= max)
-      .map((i) => {
-        if (i.length === 1) return i.map((j) => j.item);
-        return `(${i.map((j) => j.item).join(", ")})`;
-      })
-      .map((i) => i)
-      .join(" OR ");
-  }
-
   componentDidMount() {
     this._isMounted = true;
     this.handleSubmit();
@@ -91,7 +63,7 @@ class WishList extends Component {
               <tr key={i.id}>
                 <td className="col-2">{i.month}</td>
                 <td>
-                  {this.max_possible_pair(
+                  {max_possible_pair(
                     this.state.wish,
                     i.total_extra_money,
                     "price"
