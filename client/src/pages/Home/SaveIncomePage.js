@@ -15,9 +15,14 @@ class SaveIncome extends Component {
   }
 
   handleSubmit({ income }) {
-    const data = { income };
-    axios
-      .post("income", data)
+    const data = JSON.parse(localStorage.getItem("user"));
+    const options = {
+      method: "POST",
+      headers: { Authorization: `Bearer ${data.token}` },
+      url: "income",
+      data: {income}
+    };
+    axios(options)
       .then((res) => {
         if (res.data) {
           this.setState({
