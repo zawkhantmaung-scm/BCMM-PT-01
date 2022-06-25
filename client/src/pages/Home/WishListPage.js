@@ -11,12 +11,28 @@ class WishList extends Component {
       errors: "",
       success: "",
       wish: [],
-      pag: 0,
+      pag: 1,
+      isDisabled: () => {
+        if (this.state.wish.length > 0) {
+          return (
+            this.state.wish.length % (this.state.pag * 10) ===
+              this.state.wish.length ||
+            this.state.wish.length % (this.state.pag * 10) === 0
+          );
+        }
+        return false;
+      },
+      isPag: () => {
+        return this.state.wish.filter((i, j) => {
+          return j >= (this.state.pag - 1) * 10 && j < this.state.pag * 10;
+        });
+      },
     };
   }
 
   handleSubmit({ item, price }) {
     const data = { item, price };
+    this.state.wish.push({ id: this.state.wish.length + 1, item, price });
     axios
       .post("wish", data)
       .then((res) => {
@@ -47,9 +63,10 @@ class WishList extends Component {
     axios(options)
       .then((res) => {
         if (res.data && res.data.wish && this._isMounted) {
-          const pagination = localStorage.getItem('pagination')
           this.setState({
-            wish: res.data.wish.slice(pagination * 10, pagination + 10),
+            wish: res.data.wish.map((i, j) => {
+              return { id: (i.id = j + 1), item: i.item, price: i.price };
+            }),
           });
         }
       })
@@ -64,14 +81,14 @@ class WishList extends Component {
       });
   }
 
-  pagination = (num, text) => {
-    console.log('num', num, text)
-    localStorage.setItem('pagination', num)
-  }
+  pagination = (num) => {
+    this.setState({
+      pag: num,
+    });
+  };
 
   componentDidMount() {
     this._isMounted = true;
-    this.pagination(this.state.pag)
     this.fetchWishList();
   }
 
@@ -146,8 +163,8 @@ class WishList extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.wish.map((i) => (
-                  <tr key={i.id}>
+                {this.state.isPag().map((i, j) => (
+                  <tr key={j}>
                     <td className="col-1">{i.id}</td>
                     <td>{i.item}</td>
                     <td className="col-3">{i.price}</td>
@@ -157,23 +174,24 @@ class WishList extends Component {
             </table>
             <nav aria-label="Page navigation example">
               <ul className="pagination">
-                <li className="page-item">
-                  <button onClick={this.pagination} className={`page-link ${this.state.pag === 0 ? 'disabled':''}`} aria-label="Previous">
+                <li
+                  onClick={this.pagination.bind(this, this.state.pag - 1)}
+                  className={`page-item ${
+                    this.state.pag === 1 ? "disabled" : ""
+                  }`}
+                >
+                  <button aria-label="Previous" className="page-link">
                     <span aria-hidden="true">&laquo;</span>
                     <span className="sr-only">Previous</span>
                   </button>
                 </li>
-                <li className="page-item">
-                  <button className="page-link">1</button>
-                </li>
-                <li className="page-item">
-                  <button className="page-link">2</button>
-                </li>
-                <li className="page-item">
-                  <button className="page-link">3</button>
-                </li>
-                <li onClick={this.pagination} className="page-item">
-                  <button  className={`page-link`} aria-label="Next">
+                <li
+                  onClick={this.pagination.bind(this, this.state.pag + 1)}
+                  className={`page-item ${
+                    this.state.isDisabled() ? "disabled" : ""
+                  }`}
+                >
+                  <button className={`page-link`} aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                     <span className="sr-only">Next</span>
                   </button>

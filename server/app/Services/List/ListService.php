@@ -24,19 +24,19 @@ class ListService implements ListServiceInterface
         $userId = Auth::user()->id;
         $income = $this->listRepo->getIncome($userId);
         $wish = $this->listRepo->getWish($userId);
-        if (!($income && $wish)) {
+        if (count($income) > 0 && count($wish) > 0) {
             return response()->json([
-                'message' => 'There\'s no datas!',
+                'message' => 'Successfully fetched datas!',
                 'income' => $income,
                 'wish' => $wish,
-                'disabled' => true,
+                'disabled' => false,
             ], 200);
         }
         return response()->json([
-            'message' => 'Successfully fetched datas!',
+            'message' => 'There\'s no datas!',
             'income' => $income,
             'wish' => $wish,
-            'disabled' => false,
+            'disabled' => true,
         ], 200);
     }
     
