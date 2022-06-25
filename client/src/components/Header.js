@@ -16,7 +16,7 @@ class Header extends Component {
     localStorage.removeItem("user");
 
     dispatch({
-      type: LOGOUT
+      type: LOGOUT,
     });
   }
 
@@ -25,9 +25,9 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: state.auth.isLoggedIn,
-  user: state.auth.user
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps)(Header);

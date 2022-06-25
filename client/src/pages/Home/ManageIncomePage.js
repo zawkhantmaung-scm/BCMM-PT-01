@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import axios from "../../axios";
+import max_possible_pair from "max_possible_pair";
 
-class Index extends Component {
+class WishList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,7 +11,7 @@ class Index extends Component {
       success: "",
       income: [],
       wish: [],
-      disabled: true,
+      disabled: false,
     };
   }
 
@@ -55,24 +55,25 @@ class Index extends Component {
 
   render() {
     return (
-      <Fragment>
-        <div className="menu">
-          <Link to="/save-income" className="btn btn-warning mb-4">
-            SAVE INCOME
-          </Link>
-          <Link to="/wish-list" className="btn btn-warning mb-4">
-            WISH LIST
-          </Link>
-          <Link
-            to="/manage-income"
-            className={`btn btn-warning mb-4 ${
-              this.state.disabled ? "disabled" : ""
-            }`}
-          >
-            MANAGE INCOME
-          </Link>
-        </div>
-      </Fragment>
+      <div>
+        <h2>Manage Income</h2>
+        <table className="table table-bordered mt-4">
+          <tbody>
+            {this.state.income.map((i) => (
+              <tr key={i.id}>
+                <td className="col-2">{i.month}</td>
+                <td>
+                  {max_possible_pair(
+                    this.state.wish,
+                    i.total_extra_money,
+                    "price"
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }
@@ -81,4 +82,4 @@ const mapStateToProps = (state) => ({
   isLoggedIn: state.auth.isLoggedIn,
 });
 
-export default connect(mapStateToProps)(Index);
+export default connect(mapStateToProps)(WishList);

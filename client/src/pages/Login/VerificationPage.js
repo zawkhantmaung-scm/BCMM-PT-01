@@ -8,19 +8,22 @@ class Verification extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errors: '',
-      success: '',
+      errors: "",
+      success: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit() {
     let token = new URLSearchParams(this.props.location.search).get("token");
-    if (!token) {this.props.history.push("/login"); return};
+    if (!token) {
+      this.props.history.push("/login");
+      return;
+    }
     axios
       .post("verification", { token })
       .then((res) => {
-        if (res.data) {
+        if (res.data && this._isMounted) {
           this.setState({
             success: res.data.message,
           });
@@ -28,7 +31,7 @@ class Verification extends Component {
         }
       })
       .catch((err) => {
-        if (err.response) {
+        if (err.response && this._isMounted) {
           if (err.response.data.errors) {
             this.setState({
               errors: err.response.data.errors,
@@ -54,9 +57,7 @@ class Verification extends Component {
 
     return (
       <div className="success">
-        <h3 className="mb-4">
-          {this.state.errors || this.state.success}
-        </h3>
+        <h3 className="mb-4">{this.state.errors || this.state.success}</h3>
         <Link to="/login" className="btn btn-warning">
           Return to Login
         </Link>

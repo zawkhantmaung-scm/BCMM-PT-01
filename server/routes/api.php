@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ListController;
 use Illuminate\Validation\ValidationException;
 
 /*
@@ -34,3 +35,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('register', [AuthController::class, 'register']);
 Route::post('verification', [AuthController::class, 'verification']);
+
+Route::get('list', [ListController::class, 'list'])->middleware('auth:sanctum');
+Route::post('income', [ListController::class, 'income'])->middleware('auth:sanctum');
+Route::post('wish', [ListController::class, 'wish'])->middleware('auth:sanctum');
