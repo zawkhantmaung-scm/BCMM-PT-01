@@ -40,6 +40,6 @@ Route::get('settings', [ListController::class, 'getSettigs'])->middleware('auth:
 Route::get('todolists', [ListController::class, 'getTodolists'])->middleware('auth:sanctum');
 Route::get('bus-schedules', [ListController::class, 'getBusSchedules'])->middleware('auth:sanctum');
 Route::get('movie-time', [ListController::class, 'getMovieTimeDatas'])->middleware('auth:sanctum');
-Route::post('settings', [ListController::class, 'postSetting'])->middleware('auth:sanctum');
+Route::post('setting', [ListController::class, 'postSetting'])->middleware('auth:sanctum');
 Route::post('todolist', [ListController::class, 'postTodolist'])->middleware('auth:sanctum');
 Route::post('bus-schedule', [ListController::class, 'postBusSchedule'])->middleware('auth:sanctum');

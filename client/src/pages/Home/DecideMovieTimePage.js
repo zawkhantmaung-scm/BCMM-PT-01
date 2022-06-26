@@ -1,6 +1,5 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import axios from "../../axios";
 
 class Index extends Component {
@@ -9,6 +8,8 @@ class Index extends Component {
     this.state = {
       errors: "",
       success: "",
+      todolists: [],
+      bus_schedules: [],
       disabled: true,
     };
   }
@@ -25,6 +26,8 @@ class Index extends Component {
         if (res.data && this._isMounted) {
           this.setState({
             success: res.data.message,
+            todolists: res.data.todolists,
+            bus_schedules: res.data.bus_schedules,
             disabled: res.data.disabled,
           });
         }
@@ -40,6 +43,11 @@ class Index extends Component {
       });
   }
 
+  decideMovieTime() {
+    //
+    return 'You can catch the time 10:00 AM'
+  }
+
   componentDidMount() {
     this._isMounted = true;
     this.handleSubmit();
@@ -51,27 +59,10 @@ class Index extends Component {
 
   render() {
     return (
-      <Fragment>
-        <div className="menu">
-          <Link to="/setting" className="btn btn-warning mb-4">
-            SETTING
-          </Link>
-          <Link to="/todolists" className="btn btn-warning mb-4">
-            TIME SCHEDULE
-          </Link>
-          <Link to="/bus-schedules" className="btn btn-warning mb-4">
-          BUS SCHEDULE
-          </Link>
-          <Link
-            to="/movie-time"
-            className={`btn btn-warning mb-4 ${
-              this.state.disabled ? "disabled" : ""
-            }`}
-          >
-            DECIDE MOVIE TIME
-          </Link>
-        </div>
-      </Fragment>
+      <div>
+        <h2>Movie Time</h2>
+        <div className="display-flex txt-blue"><h3>{this.decideMovieTime()}</h3></div>
+      </div>
     );
   }
 }
