@@ -17,74 +17,118 @@ class ListService implements ListServiceInterface
     {
         $this->listRepo = $listRepo;
     }
-
-
-    public function list()
+    public function getSettigs()
     {
         $userId = Auth::user()->id;
-        $income = $this->listRepo->getIncome($userId);
-        $wish = $this->listRepo->getWish($userId);
-        if (count($income) > 0 && count($wish) > 0) {
+        $settings = $this->listRepo->getSettigs($userId);
+        return response()->json([
+            'message' => 'Successfully fetched datas!',
+            'settings' => $settings,
+        ], 200);
+    }
+
+    public function getTodolists()
+    {
+        $userId = Auth::user()->id;
+        $todolists = $this->listRepo->getTodolists($userId);
+        return response()->json([
+            'message' => 'Successfully fetched datas!',
+            'todolists' => $todolists,
+        ], 200);
+    }
+
+    public function getBusSchedules()
+    {
+        $userId = Auth::user()->id;
+        $bus_schedules = $this->listRepo->getBusSchedules($userId);
+        return response()->json([
+            'message' => 'Successfully fetched datas!',
+            'bus_schedules' => $bus_schedules,
+        ], 200);
+    }
+
+    public function postSetting($request)
+    {
+        $data = [
+            'user_id' => Auth::user()->id,
+            'walking_time' => $request->walking_time,
+            'time_taken_to_cinema' => $request->time_taken_to_cinema,
+            'movie_time' => $request->movie_time,
+        ];
+
+        $resp = $this->listRepo->postSetting($data);
+
+        if(!$resp) {
+            return response()->json([
+                'errors' => 'Something went wrong! Please try again.',
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => 'Successfully inserted!',
+        ], 200);
+    }
+
+    public function postTodolist($request)
+    {
+        $userId = Auth::user()->id;
+        $data = [
+            'alarm' => $request->alarm,
+            'time_to_teeth' => $request->time_to_teeth,
+            'breakfast_time' => $request->breakfast_time,
+        ];
+        $resp = $this->listRepo->postTodolist($userId, $data);
+
+        if(!$resp) {
+            return response()->json([
+                'errors' => 'Something went wrong! Please try again.',
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => 'Successfully inserted or updated!',
+        ], 200);
+    }
+
+    public function postBusSchedule($request)
+    {
+        $data = [
+            'user_id' => Auth::user()->id,
+            'bus_time' => $request->bus_time,
+        ];
+
+        $resp = $this->listRepo->postBusSchedule($data);
+
+        if(!$resp) {
+            return response()->json([
+                'errors' => 'Something went wrong! Please try again.',
+            ], 400);
+        }
+
+        return response()->json([
+            'message' => 'Successfully inserted!',
+        ], 200);
+    }
+
+    public function getMovieTimeDatas()
+    {
+        $userId = Auth::user()->id;
+        $todolists = $this->listRepo->getTodolists($userId);
+        $bus_schedules = $this->listRepo->getBusSchedules($userId);
+        if (count($todolists) > 0 && count($bus_schedules) > 0) {
             return response()->json([
                 'message' => 'Successfully fetched datas!',
-                'income' => $income,
-                'wish' => $wish,
+                'todolists' => $todolists,
+                'bus_schedules' => $bus_schedules,
                 'disabled' => false,
             ], 200);
         }
         return response()->json([
             'message' => 'There\'s no datas!',
-            'income' => $income,
-            'wish' => $wish,
+            'todolists' => $todolists,
+            'bus_schedules' => $bus_schedules,
             'disabled' => true,
         ], 200);
     }
-    
-    public function income($request)
-    {
-        $income = $request->income;
-        $userId = Auth::user()->id;
-        $total = $this->listRepo->getTotalExtraMoney($userId);
-        $date = Carbon::now();
-        $monthName = $date->format('F');
-        $data = [
-            'user_id' => Auth::user()->id,
-            'income' => $income,
-            'total_extra_money' => $total + ($income * 0.2),
-            'month' => $monthName,
-        ];
 
-        $resp = $this->listRepo->postIncome($data);
-
-        if(!$resp) {
-            return response()->json([
-                'errors' => 'Something went wrong! Please try again.',
-            ], 400);
-        }
-
-        return response()->json([
-            'message' => 'Successfully inserted!',
-        ], 200);
-    }
-
-    public function wish($request)
-    {
-        $data = [
-            'user_id' => Auth::user()->id,
-            'item' => $request->item,
-            'price' => $request->price,
-        ];
-
-        $resp = $this->listRepo->postWish($data);
-
-        if(!$resp) {
-            return response()->json([
-                'errors' => 'Something went wrong! Please try again.',
-            ], 400);
-        }
-
-        return response()->json([
-            'message' => 'Successfully inserted!',
-        ], 200);
-    }
 }

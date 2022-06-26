@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Wish extends Model
+class Setting extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'item',
-        'price',
+        'walking_time',
+        'time_taken_to_cinema',
+        'movie_time',
     ];
 }

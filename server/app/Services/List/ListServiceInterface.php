@@ -4,7 +4,11 @@ namespace App\Services\List;
 
 interface ListServiceInterface
 {
-    public function list();
-    public function income($request);
-    public function wish($request);
+    public function getSettigs();
+    public function getTodolists();
+    public function getBusSchedules();
+    public function postSetting($request);
+    public function postTodolist($request);
+    public function postBusSchedule($request);
+    public function getMovieTimeDatas();
 }
