@@ -113,11 +113,13 @@ class ListService implements ListServiceInterface
     public function getMovieTimeDatas()
     {
         $userId = Auth::user()->id;
+        $settings = $this->listRepo->getSettigs($userId);
         $todolists = $this->listRepo->getTodolists($userId);
         $bus_schedules = $this->listRepo->getBusSchedules($userId);
-        if (count($todolists) > 0 && count($bus_schedules) > 0) {
+        if (count($todolists) > 0 && count($bus_schedules) > 0 && count($settings) > 0) {
             return response()->json([
                 'message' => 'Successfully fetched datas!',
+                'settings' => $settings,
                 'todolists' => $todolists,
                 'bus_schedules' => $bus_schedules,
                 'disabled' => false,
@@ -125,6 +127,7 @@ class ListService implements ListServiceInterface
         }
         return response()->json([
             'message' => 'There\'s no datas!',
+            'settings' => $settings,
             'todolists' => $todolists,
             'bus_schedules' => $bus_schedules,
             'disabled' => true,
