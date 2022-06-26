@@ -46,8 +46,14 @@ class SaveTimeSchedule extends Component {
         },
       ],
     });
-    axios
-      .post("todolist", data)
+    const user = JSON.parse(localStorage.getItem("user"));
+    const options = {
+      method: "POST",
+      headers: { Authorization: `Bearer ${user.token}` },
+      url: "todolist",
+      data,
+    };
+    axios(options)
       .then((res) => {
         if (res.data) {
           this.setState({

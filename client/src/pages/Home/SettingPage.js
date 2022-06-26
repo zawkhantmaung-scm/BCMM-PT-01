@@ -58,8 +58,14 @@ class Setting extends Component {
       time_taken_to_cinema,
       movie_time,
     });
-    axios
-      .post("setting", data)
+    const user = JSON.parse(localStorage.getItem("user"));
+    const options = {
+      method: "POST",
+      headers: { Authorization: `Bearer ${user.token}` },
+      url: "setting",
+      data,
+    };
+    axios(options)
       .then((res) => {
         if (res.data) {
           this.setState({

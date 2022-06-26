@@ -47,8 +47,14 @@ class BusSchedule extends Component {
       id: this.state.bus_schedules.length + 1,
       bus_time,
     });
-    axios
-      .post("bus-schedule", data)
+    const user = JSON.parse(localStorage.getItem("user"));
+    const options = {
+      method: "POST",
+      headers: { Authorization: `Bearer ${user.token}` },
+      url: "bus-schedule",
+      data,
+    };
+    axios(options)
       .then((res) => {
         if (res.data) {
           this.setState({
