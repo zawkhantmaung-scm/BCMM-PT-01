@@ -36,6 +36,10 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanct
 Route::post('register', [AuthController::class, 'register']);
 Route::post('verification', [AuthController::class, 'verification']);
 
-Route::get('list', [ListController::class, 'list'])->middleware('auth:sanctum');
-Route::post('income', [ListController::class, 'income'])->middleware('auth:sanctum');
-Route::post('wish', [ListController::class, 'wish'])->middleware('auth:sanctum');
+Route::get('settings', [ListController::class, 'getSettigs'])->middleware('auth:sanctum');
+Route::get('todolists', [ListController::class, 'getTodolists'])->middleware('auth:sanctum');
+Route::get('bus-schedules', [ListController::class, 'getBusSchedules'])->middleware('auth:sanctum');
+Route::get('movie-time', [ListController::class, 'getMovieTimeDatas'])->middleware('auth:sanctum');
+Route::post('setting', [ListController::class, 'postSetting'])->middleware('auth:sanctum');
+Route::post('todolist', [ListController::class, 'postTodolist'])->middleware('auth:sanctum');
+Route::post('bus-schedule', [ListController::class, 'postBusSchedule'])->middleware('auth:sanctum');

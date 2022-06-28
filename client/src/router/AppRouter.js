@@ -6,9 +6,10 @@ import LoginPage from "../pages/Login/LoginPage";
 import RegisterPage from "../pages/Login/RegisterPage";
 import VerificationPage from "../pages/Login/VerificationPage";
 import IndexPage from "../pages/Home/IndexPage";
-import SaveIncomePage from "../pages/Home/SaveIncomePage";
-import WishListPage from "../pages/Home/WishListPage";
-import ManageIncomePage from "../pages/Home/ManageIncomePage";
+import SettingPage from "../pages/Home/SettingPage";
+import SaveTimeSchedulePage from "../pages/Home/SaveTimeSchedulePage";
+import BusSchedulePage from "../pages/Home/BusSchedulePage";
+import DecideMovieTimePage from "../pages/Home/DecideMovieTimePage";
 import Success from "../pages/SuccessPage";
 
 const AppRouter = () => (
@@ -18,9 +19,10 @@ const AppRouter = () => (
       <PublicRoute path="/register" component={RegisterPage} />
       <PublicRoute path="/verification" component={VerificationPage} />
       <PublicRoute path="/success" component={Success} />
-      <PrivateRoute path="/save-income" component={SaveIncomePage} />
-      <PrivateRoute path="/wish-list" component={WishListPage} />
-      <PrivateRoute path="/manage-income" component={ManageIncomePage} />
+      <PrivateRoute path="/setting" component={SettingPage} />
+      <PrivateRoute path="/todolists" component={SaveTimeSchedulePage} />
+      <PrivateRoute path="/bus-schedules" component={BusSchedulePage} />
+      <PrivateRoute path="/movie-time" component={DecideMovieTimePage} />
       {/* Declare Before Index Page */}
       <PrivateRoute path="/" component={IndexPage} />
 

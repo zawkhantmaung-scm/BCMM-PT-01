@@ -4,9 +4,10 @@ namespace App\Repositories\List;
 
 interface ListRepositoryInterface
 {
-    public function getIncome($userId);
-    public function getWish($userId);
-    public function getTotalExtraMoney($userId);
-    public function postIncome($data);
-    public function postWish($data);
+    public function getSettigs($userId);
+    public function getTodolists($userId);
+    public function getBusSchedules($userId);
+    public function postSetting($data);
+    public function postTodolist($userId, $data);
+    public function postBusSchedule($data);
 }

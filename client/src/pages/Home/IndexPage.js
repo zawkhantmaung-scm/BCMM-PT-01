@@ -9,8 +9,6 @@ class Index extends Component {
     this.state = {
       errors: "",
       success: "",
-      income: [],
-      wish: [],
       disabled: true,
     };
   }
@@ -20,15 +18,13 @@ class Index extends Component {
     const options = {
       method: "GET",
       headers: { Authorization: `Bearer ${data.token}` },
-      url: "list",
+      url: "movie-time",
     };
     axios(options)
       .then((res) => {
         if (res.data && this._isMounted) {
           this.setState({
             success: res.data.message,
-            income: res.data.income,
-            wish: res.data.wish,
             disabled: res.data.disabled,
           });
         }
@@ -57,19 +53,22 @@ class Index extends Component {
     return (
       <Fragment>
         <div className="menu">
-          <Link to="/save-income" className="btn btn-warning mb-4">
-            SAVE INCOME
+          <Link to="/setting" className="btn btn-warning mb-4">
+            SETTING
           </Link>
-          <Link to="/wish-list" className="btn btn-warning mb-4">
-            WISH LIST
+          <Link to="/todolists" className="btn btn-warning mb-4">
+            TIME SCHEDULE
+          </Link>
+          <Link to="/bus-schedules" className="btn btn-warning mb-4">
+          BUS SCHEDULE
           </Link>
           <Link
-            to="/manage-income"
+            to="/movie-time"
             className={`btn btn-warning mb-4 ${
               this.state.disabled ? "disabled" : ""
             }`}
           >
-            MANAGE INCOME
+            DECIDE MOVIE TIME
           </Link>
         </div>
       </Fragment>

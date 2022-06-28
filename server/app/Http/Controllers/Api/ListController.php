@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\List\SettingRequest;
+use App\Http\Requests\List\TodolistRequest;
 use App\Services\List\ListServiceInterface;
+use App\Http\Requests\List\BusScheduleRequest;
 
 class ListController extends Controller
 {
@@ -15,18 +18,38 @@ class ListController extends Controller
         $this->listService = $listService;
     }
 
-    public function list()
+    public function getSettigs()
     {
-        return $this->listService->list();
+        return $this->listService->getSettigs();
     }
 
-    public function income(Request $request)
+    public function getTodolists()
     {
-        return $this->listService->income($request);
+        return $this->listService->getTodolists();
     }
 
-    public function wish(Request $request)
+    public function getBusSchedules()
     {
-        return $this->listService->wish($request);
+        return $this->listService->getBusSchedules();
+    }
+
+    public function getMovieTimeDatas()
+    {
+        return $this->listService->getMovieTimeDatas();
+    }
+
+    public function postSetting(SettingRequest $request)
+    {
+        return $this->listService->postSetting($request);
+    }
+
+    public function postTodolist(TodolistRequest $request)
+    {
+        return $this->listService->postTodolist($request);
+    }
+
+    public function postBusSchedule(BusScheduleRequest $request)
+    {
+        return $this->listService->postBusSchedule($request);
     }
 }

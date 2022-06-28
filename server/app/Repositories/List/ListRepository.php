@@ -4,32 +4,43 @@ namespace App\Repositories\List;
 
 use App\Models\Wish;
 use App\Models\Income;
+use App\Models\Setting;
+use App\Models\Todolist;
+use App\Models\BusSchedule;
+use Illuminate\Support\Facades\Log;
 
 class ListRepository implements ListRepositoryInterface
 {
-    public function getIncome($userId)
+    public function getSettigs($userId)
     {
-        return Income::where('user_id', $userId)->get(); //TODO: Refactor
+        return Setting::where('user_id', $userId)->get(); //TODO: Refactor
     }
 
-    public function getWish($userId)
+    public function getTodolists($userId)
     {
-        return Wish::where('user_id', $userId)->get(); //TODO: Refactor
+        return Todolist::where('user_id', $userId)->get(); //TODO: Refactor
     }
 
-    public function getTotalExtraMoney($userId)
+    public function getBusSchedules($userId)
     {
-        $resp = Income::where('user_id', $userId)->latest('created_at')->first();
-        return !is_null($resp) ? $resp->total_extra_money : 0; //TODO: Refactor
+        return BusSchedule::where('user_id', $userId)->get(); //TODO: Refactor
     }
 
-    public function postIncome($data)
+    public function postSetting($data)
     {
-        return Income::create($data);
+        return Setting::create($data);
     }
 
-    public function postWish($data)
+    public function postTodolist($userId, $data)
     {
-        return Wish::create($data);
+        return Todolist::updateOrCreate(
+            ['user_id' => $userId],
+            $data
+        );
+    }
+
+    public function postBusSchedule($data)
+    {
+        return BusSchedule::create($data);
     }
 }
