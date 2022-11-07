@@ -125,22 +125,25 @@ class Index extends Component {
     bus_schedules = bus_schedules.filter((i) => i.is_arrive);
     settings.forEach((i, j) => {
       bus_schedules.forEach((k) => {
-        settings[j] = {
-          id: i.id,
-          movie_time: i.movie_time,
-          catch_the_time:
-            parseInt(k.bus_time.split(":")[0]) <
-              parseInt(i.movie_time.split(":")[0]) ||
-            (parseInt(k.bus_time.split(":")[0]) ===
-              parseInt(i.movie_time.split(":")[0]) &&
-              parseInt(k.bus_time.split(":")[1]) <
-                parseInt(i.movie_time.split(":")[1])),
-        };
+        let bool =
+          parseInt(k.bus_time.split(":")[0]) <
+            parseInt(i.movie_time.split(":")[0]) ||
+          (parseInt(k.bus_time.split(":")[0]) ===
+            parseInt(i.movie_time.split(":")[0]) &&
+            parseInt(k.bus_time.split(":")[1]) <
+              parseInt(i.movie_time.split(":")[1]));
+        if (bool) {
+          settings[j] = {
+            id: i.id,
+            movie_time: i.movie_time,
+            catch_the_time: bool,
+          };
+        }
       });
     });
 
     let resp = "";
-    for (let obj of settings) {
+    for (let obj of settings.sort((b, a) => parseInt(b.movie_time.split(":")[0]) - parseInt(a.movie_time.split(":")[0]))) {
       if (obj.catch_the_time) {
         resp = moment(obj.movie_time, ["HH:mm"]).format("hh:mm A");
         break;
