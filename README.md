@@ -19,7 +19,7 @@ docker-compose exec php bash
 composer install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate
+php artisan migrate:fresh --seed
 exit
 cd client
 yarn install

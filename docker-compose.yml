@@ -43,8 +43,8 @@ services:
     command: [mysqld, --default-authentication-plugin=mysql_native_password]
     environment:
       MYSQL_DATABASE: bcmm
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_USER: bcmm
+      MYSQL_PASSWORD: bcmm
       MYSQL_ROOT_PASSWORD: root
     container_name: mysql
     networks:
